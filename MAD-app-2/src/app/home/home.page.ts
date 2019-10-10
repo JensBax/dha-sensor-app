@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
-import { Book } from '../book';
-import { BookService } from '../book.service';
-import { BookPage } from '../book/book.page';
-import { Camera , CameraOptions, PictureSourceType} from '@ionic-native/camera/ngx'
+import { Camera , CameraOptions, PictureSourceType} from '@ionic-native/camera/ngx';
 import { ActionSheetController } from '@ionic/angular';
-import * as Tesseract from 'tesseract.js';
 import { OCR, OCRSourceType, OCRResult } from '@ionic-native/ocr/ngx';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -13,15 +10,15 @@ import { OCR, OCRSourceType, OCRResult } from '@ionic-native/ocr/ngx';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  // let ISBN = '0451526538';
+  ISBN = '';
 
-  selectedImage: string
-  imageText: string
+  selectedImage: string;
+  imageText: string;
 
   constructor(private camera: Camera, private actionSheetCtrl: ActionSheetController, private ocr: OCR) {}
 
-  async selectSource(){
-    let actionSheet = await this.actionSheetCtrl.create({
+  async selectSource() {
+    const actionSheet = await this.actionSheetCtrl.create({
       buttons: [
         {
           text: 'Use Library',
@@ -42,27 +39,41 @@ export class HomePage {
     actionSheet.present();
   }
 
-  getPicture(sourceType: PictureSourceType){
+  getPicture(sourceType: PictureSourceType) {
     this.camera.getPicture({
       quality: 100,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      sourceType: sourceType,
+      destinationType: this.camera.DestinationType.FILE_URI,
+      sourceType,
       allowEdit: true,
       saveToPhotoAlbum: false,
       correctOrientation: true
     }).then(imageData => {
-      this.selectedImage = `data:image/jpeg;base64,${imageData}`
-    })
+      this.selectedImage = imageData;
+      console.log(this.selectedImage);
+      this.recognizeImage();
+    });
   }
 
-  recognizeImage(){
-    // Tesseract.recognize(this.selectedImage)
-    // .catch(err => console.error(err))
-    // .then(result => {
-    //   this.imageText = result.text
-    // })
+  recognizeImage() {
     this.ocr.recText(OCRSourceType.NORMFILEURL, this.selectedImage)
-  .then((res: OCRResult) => {this.imageText = JSON.stringify(res)})
-  .catch((error: any) => console.error(error));
+      .then((res: OCRResult) => {console.log(res); this.parseImageText(res); })
+      .catch((error: any) => console.error(error));
+  }
+
+  parseImageText(imageText: OCRResult) {
+    const words = imageText.words.wordtext;
+
+    // tslint:disable-next-line:forin
+    for (let index = 0; index < words.length; index++) {
+      const word = words[index];
+      if (word.toLowerCase().includes('isbn')) {
+        if (/\d/.test(words[index + 1])) {
+          const found = words[index + 1];
+          console.log(found);
+          this.ISBN = words[index + 1];
+          break;
+        }
+      }
+    }
   }
 }

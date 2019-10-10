@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button></ion-back-button>
+            <ion-back-button [defaultHref]="['/home/']"></ion-back-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
@@ -11,7 +11,10 @@
         <ion-card *ngIf='book.title !== undefined' href='{{ book.url }}'>
             <img src="{{ book.cover.large }}" />
             <ion-card-header>
-                <ion-card-subtitle><span *ngFor='let author of book.authors'>{{ author.name }}</span></ion-card-subtitle>
+                <ion-card-subtitle><span *ngFor='let author of book.authors; last as isLast'>{{ author.name }}
+                    <span *ngIf="!isLast">- </span>
+                    </span>
+                </ion-card-subtitle>
                 <ion-card-title>{{ book.title }}</ion-card-title>
             </ion-card-header>
             <ion-card-content no-padding>

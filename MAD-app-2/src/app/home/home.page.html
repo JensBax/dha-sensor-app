@@ -8,9 +8,6 @@
 
 <ion-content padding [fullscreen]='true'>
     <ion-button full (click)="selectSource()">Select Image</ion-button>
-    <ion-button full (click)="recognizeImage()" [disabled]="!selectedImage">Recognize Image</ion-button>
-
-    <img [src]="selectedImage" *ngIf="selectedImage">
 
     <ion-card>
         <ion-card-header>Image Text</ion-card-header>
@@ -20,10 +17,10 @@
     </ion-card>
     <ion-item>
         <ion-label>ISBN</ion-label>
-        <ion-input expand="block" #ISBN type='text' value='0062316095'></ion-input>
+        <ion-input expand="block" type='text' [(ngModel)]="ISBN"></ion-input>
     </ion-item>
 
-    <ion-button expand="block" [routerLink]="['/book/'] + ISBN.value">
+    <ion-button expand="block" [routerLink]="['/book/'] + ISBN">
         Show book
     </ion-button>
 </ion-content>
