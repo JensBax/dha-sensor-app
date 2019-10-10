@@ -6,9 +6,16 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div class="ion-padding">
-    The world is your oyster.
-    <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
-  </div>
+<ion-content padding>
+<ion-button full (click)="selectSource()">Select Image</ion-button>
+<ion-button full (click)="recognizeImage()" [disabled]="!selectedImage">Recognize Image</ion-button>
+
+<img [src]="selectedImage" *ngIf="selectedImage">
+
+<ion-card>
+  <ion-card-header>Image Text</ion-card-header>
+  <ion-card-content>
+    {{ imageText }}
+  </ion-card-content>
+</ion-card>
 </ion-content>
