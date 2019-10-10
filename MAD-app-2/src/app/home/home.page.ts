@@ -5,6 +5,7 @@ import { BookPage } from '../book/book.page';
 import { Camera , CameraOptions, PictureSourceType} from '@ionic-native/camera/ngx'
 import { ActionSheetController } from '@ionic/angular';
 import * as Tesseract from 'tesseract.js';
+import { OCR, OCRSourceType, OCRResult } from '@ionic-native/ocr/ngx';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +18,7 @@ export class HomePage {
   selectedImage: string
   imageText: string
 
-  constructor(private camera: Camera, private actionSheetCtrl: ActionSheetController) {}
+  constructor(private camera: Camera, private actionSheetCtrl: ActionSheetController, private ocr: OCR) {}
 
   async selectSource(){
     let actionSheet = await this.actionSheetCtrl.create({
@@ -55,10 +56,13 @@ export class HomePage {
   }
 
   recognizeImage(){
-    Tesseract.recognize(this.selectedImage)
-    .catch(err => console.error(err))
-    .then(result => {
-      this.imageText = result.text
-    })
+    // Tesseract.recognize(this.selectedImage)
+    // .catch(err => console.error(err))
+    // .then(result => {
+    //   this.imageText = result.text
+    // })
+    this.ocr.recText(OCRSourceType.NORMFILEURL, this.selectedImage)
+  .then((res: OCRResult) => {this.imageText = JSON.stringify(res)})
+  .catch((error: any) => console.error(error));
   }
 }
