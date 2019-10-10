@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Book } from '../book';
+import { BookService } from '../book.service';
+import { BookPage } from '../book/book.page';
 
 @Component({
   selector: 'app-home',
@@ -6,7 +9,5 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-
-  constructor() {}
-
+  // let ISBN = '0451526538';
 }

@@ -1,5 +1,7 @@
 {
   "name": "MAD-app-2",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

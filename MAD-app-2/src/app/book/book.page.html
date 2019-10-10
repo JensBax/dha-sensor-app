@@ -1,0 +1,47 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding [fullscreen]='true'>
+    <div *ngIf='book !== undefined'>
+        <ion-card *ngIf='book.title !== undefined' href='{{ book.url }}'>
+            <img src="{{ book.cover.large }}" />
+            <ion-card-header>
+                <ion-card-subtitle><span *ngFor='let author of book.authors'>{{ author.name }}</span></ion-card-subtitle>
+                <ion-card-title>{{ book.title }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content no-padding>
+                <ion-grid>
+                    <ion-row>
+                        <ion-col *ngIf='book.number_of_pages !== undefined'>
+                            <span>{{ book.number_of_pages }} pages</span>
+                        </ion-col>
+                        <ion-col *ngIf='book.publish_date !== undefined'>
+                            <span>Pulished on: {{ book.publish_date }}</span>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+
+            </ion-card-content>
+        </ion-card>
+        <ion-button id='more-info-btn' *ngIf='book.url !== undefined' expand="block" color='dark' href='{{ book.url }}'>
+            MORE INFO
+        </ion-button>
+
+        <!-- error has occured -->
+        <div *ngIf='book.title == undefined'>
+            <h1>Book not found</h1>
+            <p>We were not able to find the book you were looking for.</p>
+        </div>
+    </div>
+
+    <!-- network request is still going -->
+    <div class='loading' *ngIf='book === undefined'>
+        <ion-spinner></ion-spinner>
+        <h1>Looking for you book...</h1>
+    </div>
+</ion-content>
