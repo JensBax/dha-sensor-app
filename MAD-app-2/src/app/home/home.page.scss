@@ -1,5 +1,30 @@
-// app-home {
-//     .ng-progress-bar{
-//         margin-top: 88px
-//     }
-// }
+.container {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    margin: 0 auto;
+    width: 90vw;
+    max-width: 500px;
+    left: 50%;
+}
+
+.scan-instructions {
+    flex: 1 1 auto;
+    display: flex;
+    flex-flow: column;
+    .helper-image {
+        width: 100%;
+        flex: 1 1 auto;
+        background-image: url(../../assets/scan.png);
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+}
+
+.isbn-card {
+    flex: 0 1 140px;
+    ion-input {
+        text-align: right;
+    }
+}

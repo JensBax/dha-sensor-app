@@ -15,6 +15,8 @@ export class HomePage {
   selectedImage: string;
   imageText: string;
 
+  isScanning = false;
+
   constructor(private camera: Camera, private actionSheetCtrl: ActionSheetController, private ocr: OCR) {}
 
   async selectSource() {
@@ -44,10 +46,11 @@ export class HomePage {
       quality: 100,
       destinationType: this.camera.DestinationType.FILE_URI,
       sourceType,
-      allowEdit: true,
+      allowEdit: false,
       saveToPhotoAlbum: false,
       correctOrientation: true
     }).then(imageData => {
+      this.isScanning = true;
       this.selectedImage = imageData;
       console.log(this.selectedImage);
       this.recognizeImage();
@@ -56,8 +59,13 @@ export class HomePage {
 
   recognizeImage() {
     this.ocr.recText(OCRSourceType.NORMFILEURL, this.selectedImage)
-      .then((res: OCRResult) => {console.log(res); this.parseImageText(res); })
-      .catch((error: any) => console.error(error));
+      .then((res: OCRResult) => {
+        console.log(res);
+        this.parseImageText(res);
+      })
+      .catch((error: any) => {
+        console.error(error);
+        this.isScanning = false; });
   }
 
   parseImageText(imageText: OCRResult) {
@@ -75,5 +83,6 @@ export class HomePage {
         }
       }
     }
+    this.isScanning = false;
   }
 }

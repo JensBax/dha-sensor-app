@@ -7,20 +7,31 @@
 </ion-header>
 
 <ion-content padding [fullscreen]='true'>
-    <ion-button full (click)="selectSource()">Select Image</ion-button>
+    <div class='container'>
+        <div class='scan-instructions'>
+            <h2>Take a picture of the ISBN code on de back of your book.</h2>
+            <span>Or fill in the ISBN code yourself.</span>
+            <div class='helper-image'></div>
+            <!-- <img src='../../assets/scan.png' /> -->
+            <ion-button expand='block' color='light' (click)="selectSource()">Take picture</ion-button>
 
-    <ion-card>
-        <ion-card-header>Image Text</ion-card-header>
-        <ion-card-content>
-            {{ imageText }}
-        </ion-card-content>
-    </ion-card>
-    <ion-item>
-        <ion-label>ISBN</ion-label>
-        <ion-input expand="block" type='text' [(ngModel)]="ISBN"></ion-input>
-    </ion-item>
+        </div>
 
-    <ion-button expand="block" [routerLink]="['/book/'] + ISBN">
-        Show book
-    </ion-button>
+        <!-- <div class='loading' *ngIf='isScanning'>
+        <ion-spinner></ion-spinner>
+        <h1>Scanning for ISBN...</h1>
+    </div> -->
+
+        <ion-card class='isbn-card'>
+            <ion-card-content>
+                <ion-item>
+                    <ion-label>ISBN:</ion-label>
+                    <ion-input placeholder='000-0-000-00000-0' expand="block" type='text' [(ngModel)]="ISBN"></ion-input>
+                </ion-item>
+                <ion-button color='dark' expand="block" [routerLink]="['/book/'] + ISBN">
+                    Show book
+                </ion-button>
+            </ion-card-content>
+        </ion-card>
+    </div>
 </ion-content>
