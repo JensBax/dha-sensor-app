@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { Camera , CameraOptions, PictureSourceType} from '@ionic-native/camera/ngx';
-import { ActionSheetController } from '@ionic/angular';
+import { Camera , PictureSourceType} from '@ionic-native/camera/ngx';
+import { ActionSheetController, ToastController } from '@ionic/angular';
 import { OCR, OCRSourceType, OCRResult } from '@ionic-native/ocr/ngx';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +16,10 @@ export class HomePage {
 
   isScanning = false;
 
-  constructor(private camera: Camera, private actionSheetCtrl: ActionSheetController, private ocr: OCR) {}
+  constructor(private camera: Camera,
+              private actionSheetCtrl: ActionSheetController,
+              private ocr: OCR,
+              public toastController: ToastController) {}
 
   async selectSource() {
     const actionSheet = await this.actionSheetCtrl.create({
@@ -69,20 +71,38 @@ export class HomePage {
   }
 
   parseImageText(imageText: OCRResult) {
-    const words = imageText.words.wordtext;
+    this.ISBN = '';
 
-    // tslint:disable-next-line:forin
-    for (let index = 0; index < words.length; index++) {
-      const word = words[index];
-      if (word.toLowerCase().includes('isbn')) {
-        if (/\d/.test(words[index + 1])) {
-          const found = words[index + 1];
-          console.log(found);
-          this.ISBN = words[index + 1];
-          break;
+    if (imageText.words !== undefined) {
+      const words = imageText.words.wordtext;
+
+      // tslint:disable-next-line:forin
+      for (let index = 0; index < words.length; index++) {
+        const word = words[index];
+        if (word.toLowerCase().includes('isbn')) {
+          if (/\d/.test(words[index + 1])) {
+            const found = words[index + 1];
+            console.log(found);
+            this.ISBN = words[index + 1];
+            break;
+          }
         }
       }
+
+      this.isScanning = false;
     }
-    this.isScanning = false;
+
+    if (this.ISBN === '') {
+      this.noIsbnFound();
+    }
+  }
+
+  async noIsbnFound() {
+    const toast = await this.toastController.create({
+      message: 'We didn\'t find an ISBN code.',
+      duration: 2000,
+      color: 'danger'
+    });
+    toast.present();
   }
 }
