@@ -1,20 +1,32 @@
-## Concept
-Een app die het mogelijk maakt om de voorkant (of eventueel achterkant) van een boek te scannen, om hierbij extra informatie op te halen over dit boek. Denk hierbij bijvoorbeeld aan een samenvatting, of andere boeken van de zelfde schrijver.
+# DHA Sensor app - 2019 edition - Jens & Collin
 
-## Sensoren
+![Preview](preview.png)
+
+# Overview
+This app allows you to take a picture of the ISBN code on a book to get additional information about that book.
+The app is build in ionic and uses the following sensors and api's to function:
+
 http: https://openlibrary.org/developers/api <br>
 Sensor 1: OCR https://ionicframework.com/docs/native/ocr <br>
-Sensor 2: Document scanner https://ionicframework.com/docs/native/document-scanner <br>
+Sensor 2: Camera https://ionicframework.com/docs/native/camera <br>
 
+# Installation
+- clone the repo <br>
+- Make sure you have [nodeJS](https://nodejs.org/en/) installed 
+- Run `npm install` from the root of the project <br>
+- If you haven't used Ionic before run `npm install -g ionic` <br>
 
-## Technische details
-Om een boek te kunnen scannen gebruiken we de document scanner uit de Ionic native library. Vervolgens kunnen de titel en de auteur uitgelezen worden door middel van OCR. De titel en de auteur kunnen vervolgens opgestuurd worden naar de openlibrary api om hier extra informatie op te halen.
+# Running
 
-## Wireframe
-De app zal bestaan uit 2 schermen, in het eerste scherm is het mogelijk voor de gebruiker om het boek te scannen. Het tweede scherm is een detail view waar de opgehaalde informatie over het boek getoont kan worden.
-![Wireframe](MAD-app-2.png)
+## To use the app on the web: <br>
+Run `ionic serve` in a terminal from the project root
 
+## To use the app on device:
 
-## Eventuele uitbereidingen
-Als eventuele uitbereiding voor app 3 is het mogelijk om de gebruiker een boek te laten opslaan zodat deze informatie later makkelijk weer op te halen is.
+### For iOS:
+Make sure to try it on a Mac and to have your iPhone connected and<br>
+Run `ionic cordova run ios --device` in a terminal from the project root.
 
+### For Android:
+Make sure to have your Android device connected and<br> 
+Run `ionic cordova run android --device` in a terminal from the project root.
